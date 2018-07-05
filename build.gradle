@@ -1,0 +1,12 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+
+}
+
+mainClassName = 'org.modernclients.ch3.DemoApp'
