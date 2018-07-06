@@ -24,3 +24,9 @@ hs_err_pid*
 *.iml
 .idea
 build
+
+# gradle build directory
+.gradle
+
+# Avoid ignoring Gradle wrapper jar file
+!gradle/wrapper/gradle-wrapper.jar
