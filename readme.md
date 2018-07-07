@@ -1,5 +1,7 @@
 # JavaFX UI Controls Sample App
 
+![Demo Application](https://jogiles.blob.core.windows.net/misc/modern-java-ch3-app.png)
+
 This is a project to demonstrate all JavaFX UI controls in a simplistic way. To run, simply use the embedded gradle wrapper:
 
 MacOS / Linux:
