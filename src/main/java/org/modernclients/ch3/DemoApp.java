@@ -2,7 +2,6 @@ package org.modernclients.ch3;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -16,6 +15,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * @author Jonathan Giles <jonathan@jonathangiles.net>
+ */
 public class DemoApp extends Application {
 
     private List<Sample> samples;

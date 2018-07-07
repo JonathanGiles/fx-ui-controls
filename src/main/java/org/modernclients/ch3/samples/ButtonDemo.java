@@ -9,6 +9,9 @@ import org.modernclients.ch3.Sample;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * @author Jonathan Giles <jonathan@jonathangiles.net>
+ */
 public class ButtonDemo implements Sample {
 
     @Override

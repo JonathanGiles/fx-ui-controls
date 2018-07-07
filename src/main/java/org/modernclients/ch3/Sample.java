@@ -1,12 +1,14 @@
 package org.modernclients.ch3;
 
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * @author Jonathan Giles <jonathan@jonathangiles.net>
+ */
 public interface Sample extends Comparable<Sample> {
 
     void buildDemo(Pane container, Consumer<String> console);
