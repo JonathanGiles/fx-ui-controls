@@ -31,6 +31,7 @@ public class TreeViewDemo implements Sample {
         rootItem.getChildren().addAll(treeItem1,treeItem2);
 
         TreeView<String> tree = new TreeView<>(rootItem);
+
         tree.setOnMouseClicked(e->{
             ObservableList<TreeItem<String>> selectedItems = tree.getSelectionModel().getSelectedItems();
             console.accept("Selected item->"+selectedItems);
