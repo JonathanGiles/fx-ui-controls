@@ -17,7 +17,7 @@ public class ColorPickerDemo implements Sample {
         final ColorPicker colorPicker = new ColorPicker();
         colorPicker.setOnAction(e -> {
             Color c = colorPicker.getValue();
-            System.out.println("New Color's RGB = "+c.getRed()+" "+c.getGreen()+" "+c.getBlue());
+            console.accept("New Color's RGB = "+c.getRed()+", "+c.getGreen()+", "+c.getBlue());
         });
 
         container.getChildren().add(colorPicker);
