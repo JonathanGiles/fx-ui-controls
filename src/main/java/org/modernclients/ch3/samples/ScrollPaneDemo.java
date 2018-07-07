@@ -17,6 +17,9 @@ import java.util.function.Consumer;
 
 import static javafx.scene.control.ButtonBar.ButtonData;
 
+/**
+ * @author Jonathan Giles <jonathan@jonathangiles.net>
+ */
 public class ScrollPaneDemo implements Sample {
 
     @Override

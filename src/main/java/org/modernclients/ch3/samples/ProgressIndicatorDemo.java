@@ -1,12 +1,14 @@
 package org.modernclients.ch3.samples;
 
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.Pane;
 import org.modernclients.ch3.Sample;
 
 import java.util.function.Consumer;
 
+/**
+ * @author Jonathan Giles <jonathan@jonathangiles.net>
+ */
 public class ProgressIndicatorDemo implements Sample {
 
     @Override
