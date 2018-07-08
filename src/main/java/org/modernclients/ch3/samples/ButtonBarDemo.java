@@ -10,6 +10,9 @@ import java.util.function.Consumer;
 
 import static javafx.scene.control.ButtonBar.ButtonData;
 
+/**
+ * @author Jonathan Giles <jonathan@jonathangiles.net>
+ */
 public class ButtonBarDemo implements Sample {
 
     @Override
