@@ -21,11 +21,4 @@ public class ButtonDemo implements Sample {
 
         container.getChildren().addAll(button);
     }
-
-    @Override
-    public Optional<Node> buildControlPanel() {
-        Button test = new Button("Do something");
-        VBox vBox = new VBox(test);
-        return Optional.of(vBox);
-    }
 }
