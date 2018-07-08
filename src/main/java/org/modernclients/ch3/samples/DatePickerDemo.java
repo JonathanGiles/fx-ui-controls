@@ -52,7 +52,7 @@ public class DatePickerDemo implements Sample {
 			    super.updateItem(date, empty);
 			
 			    if(!dateValidator.test(date)) {
-				    Platform.runLater(() -> setDisable(true));
+				    setDisable(true);
 			    }
 		    }
 	    };
