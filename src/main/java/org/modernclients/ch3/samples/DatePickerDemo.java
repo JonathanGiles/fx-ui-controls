@@ -104,6 +104,10 @@ public class DatePickerDemo implements Sample {
 		    else datePicker.setPromptText("");
 	    });
 	    cbShowPromptText.setSelected(true);
+	
+	    CheckBox cbShowWeekNumbers = new CheckBox("Show week numbers");
+	    cbShowWeekNumbers.selectedProperty().addListener((observable, oldValue, newValue) ->
+			                                                     datePicker.setShowWeekNumbers(newValue));
     	
 	    CheckBox cbShowHijrahCalendar = new CheckBox("Show hijrah calendar");
 	    cbShowHijrahCalendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -117,8 +121,8 @@ public class DatePickerDemo implements Sample {
 	    cbDisableTextEditing.selectedProperty().addListener((observable, oldValue, newValue) ->
 			                                                      datePicker.getEditor().setEditable(!newValue));
 	    
-	    CheckBox cbDisableFutureDaysSelection = new CheckBox("Disable range selection (e.g. future dates)");
-	    cbDisableFutureDaysSelection.selectedProperty().addListener((observable, oldValue, newValue) -> {
+	    CheckBox cbDisableRangeSelection = new CheckBox("Disable range selection (e.g. future dates)");
+	    cbDisableRangeSelection.selectedProperty().addListener((observable, oldValue, newValue) -> {
 			disableRangeSelection = newValue;
 		
 		    if(!dateValidator.test(datePicker.getValue())) {
@@ -129,8 +133,8 @@ public class DatePickerDemo implements Sample {
 	    Button btnToday = new Button("Today");
 	    btnToday.setOnAction(event -> datePicker.setValue(LocalDate.now()));
     	
-        VBox vBox = new VBox(cbShowPromptText, cbShowHijrahCalendar,
-                             cbDisableTextEditing, cbDisableFutureDaysSelection, btnToday);
+        VBox vBox = new VBox(cbShowPromptText, cbShowWeekNumbers, cbShowHijrahCalendar,
+                             cbDisableTextEditing, cbDisableRangeSelection, btnToday);
 	    vBox.setSpacing(5.0);
         return Optional.of(vBox);
     }
