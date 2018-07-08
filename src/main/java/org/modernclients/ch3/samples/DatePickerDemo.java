@@ -19,6 +19,9 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+/**
+ * @author Fouad Almalki <me@fouad.io>
+ */
 public class DatePickerDemo implements Sample {
  
 	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
