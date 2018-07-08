@@ -27,21 +27,25 @@ public class DatePickerDemo implements Sample {
 	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
     private DatePicker datePicker;
-    private boolean disableFutureDaysSelection;
+    private boolean disableRangeSelection;
+    private Predicate<LocalDate> dateValidator = localDate -> {
+    	if(disableRangeSelection) {
+    		return localDate != null && !localDate.isAfter(LocalDate.now());
+	    }
+	    else return localDate != null;
+    };
     
     @Override
     public void buildDemo(Pane container, Consumer<String> console) {
         datePicker = new DatePicker();
 	    datePicker.setChronology(IsoChronology.INSTANCE);
 	
-	    Predicate<LocalDate> dateValidator = localDate -> localDate.isAfter(LocalDate.now());
-	
 	    Callback<DatePicker, DateCell> dayCellFactory = dp -> new DateCell() {
 		    @Override
 		    public void updateItem(LocalDate date, boolean empty) {
 			    super.updateItem(date, empty);
 			
-			    if(disableFutureDaysSelection && dateValidator.test(date)) {
+			    if(!dateValidator.test(date)) {
 				    Platform.runLater(() -> setDisable(true));
 			    }
 		    }
@@ -60,7 +64,7 @@ public class DatePickerDemo implements Sample {
 			    if(string != null && !string.trim().isEmpty()) {
 				    LocalDate date = LocalDate.parse(string, dateFormatter);
 				
-				    if(disableFutureDaysSelection && dateValidator.test(date)) {
+				    if(!dateValidator.test(date)) {
 					    return datePicker.getValue(); // the old value
 				    }
 				    else return date;
@@ -75,7 +79,7 @@ public class DatePickerDemo implements Sample {
     
     @Override
     public Optional<Node> buildControlPanel() {
-	    CheckBox cbShowPromptText = new CheckBox("Show Prompt Text (dd/MM/yyyy)");
+	    CheckBox cbShowPromptText = new CheckBox("Show prompt text (dd/MM/yyyy)");
 	    cbShowPromptText.selectedProperty().addListener((observable, oldValue, newValue) -> {
 		    if(newValue) { // selected
 			    datePicker.setPromptText("dd/MM/yyyy");
@@ -84,8 +88,8 @@ public class DatePickerDemo implements Sample {
 	    });
 	    cbShowPromptText.setSelected(true);
     	
-	    CheckBox cbUseHijrahCalendar = new CheckBox("Use hijrah calendar");
-	    cbUseHijrahCalendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
+	    CheckBox cbShowHijrahCalendar = new CheckBox("Show hijrah calendar");
+	    cbShowHijrahCalendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
 	    	if(newValue) { // selected
 			    datePicker.setChronology(HijrahChronology.INSTANCE);
 		    }
@@ -96,11 +100,17 @@ public class DatePickerDemo implements Sample {
 	    cbDisableTextEditing.selectedProperty().addListener((observable, oldValue, newValue) ->
 			                                                      datePicker.getEditor().setEditable(!newValue));
 	    
-	    CheckBox cbDisableFutureDaysSelection = new CheckBox("Disable future days selection");
-	    cbDisableFutureDaysSelection.selectedProperty().addListener((observable, oldValue, newValue) ->
-		                                                                disableFutureDaysSelection = newValue);
+	    CheckBox cbDisableFutureDaysSelection = new CheckBox("Disable range selection (e.g. future dates)");
+	    cbDisableFutureDaysSelection.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			disableRangeSelection = newValue;
+		
+		    if(!dateValidator.test(datePicker.getValue())) {
+			    datePicker.setValue(null);
+			}
+	    });
     	
-        VBox vBox = new VBox(cbShowPromptText, cbUseHijrahCalendar, cbDisableTextEditing, cbDisableFutureDaysSelection);
+        VBox vBox = new VBox(cbShowPromptText, cbShowHijrahCalendar,
+                             cbDisableTextEditing, cbDisableFutureDaysSelection);
 	    vBox.setSpacing(5.0);
         return Optional.of(vBox);
     }
