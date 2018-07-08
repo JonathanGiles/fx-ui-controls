@@ -11,6 +11,7 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.modernclients.ch3.Sample;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.chrono.HijrahChronology;
 import java.time.chrono.IsoChronology;
@@ -39,6 +40,10 @@ public class DatePickerDemo implements Sample {
     public void buildDemo(Pane container, Consumer<String> console) {
         datePicker = new DatePicker();
 	    datePicker.setChronology(IsoChronology.INSTANCE);
+	    datePicker.setOnAction(e -> {
+		    LocalDate date = datePicker.getValue();
+		    console.accept("Selected date: " + (date != null ? dateFormatter.format(date) : null));
+	    });
 	
 	    Callback<DatePicker, DateCell> dayCellFactory = dp -> new DateCell() {
 		    @Override
@@ -61,13 +66,25 @@ public class DatePickerDemo implements Sample {
 		
 		    @Override
 		    public LocalDate fromString(String string) {
+			    System.out.println("string = " + string);
 			    if(string != null && !string.trim().isEmpty()) {
-				    LocalDate date = LocalDate.parse(string, dateFormatter);
 				
-				    if(!dateValidator.test(date)) {
-					    return datePicker.getValue(); // the old value
+				    LocalDate oldValue = datePicker.getValue();
+				    LocalDate newValue;
+			    	
+			    	try {
+					    newValue = LocalDate.parse(string, dateFormatter);
 				    }
-				    else return date;
+				    catch(DateTimeException e) {
+				    	console.accept("The text \"" + string + "\" does not match the pattern \"dd/MM/yyyy\"");
+				    	return oldValue;
+				    }
+				
+				    if(!dateValidator.test(newValue)) {
+					    console.accept("The date (" + dateFormatter.format(newValue) + ") is not allowed!");
+					    return oldValue;
+				    }
+				    else return newValue;
 			    }
 			    else return null;
 		    }
