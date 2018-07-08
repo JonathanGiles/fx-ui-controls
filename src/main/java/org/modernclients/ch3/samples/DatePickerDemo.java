@@ -2,6 +2,7 @@ package org.modernclients.ch3.samples;
 
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -66,7 +67,6 @@ public class DatePickerDemo implements Sample {
 		
 		    @Override
 		    public LocalDate fromString(String string) {
-			    System.out.println("string = " + string);
 			    if(string != null && !string.trim().isEmpty()) {
 				
 				    LocalDate oldValue = datePicker.getValue();
@@ -125,9 +125,12 @@ public class DatePickerDemo implements Sample {
 			    datePicker.setValue(null);
 			}
 	    });
+	
+	    Button btnToday = new Button("Today");
+	    btnToday.setOnAction(event -> datePicker.setValue(LocalDate.now()));
     	
         VBox vBox = new VBox(cbShowPromptText, cbShowHijrahCalendar,
-                             cbDisableTextEditing, cbDisableFutureDaysSelection);
+                             cbDisableTextEditing, cbDisableFutureDaysSelection, btnToday);
 	    vBox.setSpacing(5.0);
         return Optional.of(vBox);
     }
