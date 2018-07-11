@@ -20,7 +20,7 @@ public class TreeViewDemo implements Sample {
 
         TreeItem<String> treeItem1 = new TreeItem<>("Layouts");
         TreeItem<String> treeItem11 = new TreeItem<>("Pane");
-        TreeItem<String> treeItem12 = new TreeItem<>("AcnhorPane");
+        TreeItem<String> treeItem12 = new TreeItem<>("AnchorPane");
         treeItem1.getChildren().addAll(treeItem11,treeItem12);
 
         TreeItem<String> treeItem2 = new TreeItem<>("Controls");
