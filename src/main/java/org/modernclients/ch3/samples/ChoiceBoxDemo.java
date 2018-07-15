@@ -15,12 +15,16 @@ public class ChoiceBoxDemo implements Sample {
     public void buildDemo(Pane container, Consumer<String> console) {
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
 
-        choiceBox.getItems().add("Choice 1");
-        choiceBox.getItems().add("Choice 2");
-        choiceBox.getItems().add("Choice 3");
-        choiceBox.getItems().add("Choice 4");
+        choiceBox.getItems().addAll(
+            "Choice 1",
+            "Choice 2",
+            "Choice 3",
+            "Choice 4"
+        );
 
-        choiceBox.setOnAction(e->console.accept(choiceBox.getSelectionModel().getSelectedItem()));
+        choiceBox.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((o, oldValue, newValue) -> console.accept(newValue));
 
         container.getChildren().add(choiceBox);
     }
