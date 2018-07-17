@@ -1,6 +1,6 @@
 package org.modernclients.ch3.samples;
 
-import javafx.collections.ObservableList;
+import javafx.collections.ListChangeListener;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
@@ -31,9 +31,13 @@ public class TreeViewDemo implements Sample {
         rootItem.getChildren().addAll(treeItem1,treeItem2);
 
         TreeView<String> tree = new TreeView<>(rootItem);
-        tree.setOnMouseClicked(e->{
-            ObservableList<TreeItem<String>> selectedItems = tree.getSelectionModel().getSelectedItems();
-            console.accept("Selected item->"+selectedItems);
+        tree.getSelectionModel().getSelectedItems().addListener((ListChangeListener<TreeItem<String>>) c -> {
+            if (c.next()) {
+                console.accept("Tree View {\n" +
+                        "    Removed Items from selection: " + c.getRemoved().toString() +
+                        "\n    Added Items from selection: " + c.getAddedSubList().toString() +
+                        "\n}");
+            }
         });
 
         container.getChildren().add(tree);
