@@ -1,6 +1,5 @@
 package org.modernclients.ch3.samples;
 
-import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Pane;
@@ -8,6 +7,9 @@ import org.modernclients.ch3.Sample;
 
 import java.util.function.Consumer;
 
+/**
+ * @author Jonathan Giles <jonathan@jonathangiles.net>
+ */
 public class TitledPaneDemo implements Sample {
 
     @Override
