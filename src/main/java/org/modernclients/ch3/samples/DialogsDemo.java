@@ -34,7 +34,9 @@ public class DialogsDemo implements Sample {
                         "Choice Dialog", "Shows a list of choices to the user"),
 
                 createButtonForBlockingDialog(new TextInputDialog("Hello World"),
-                        "Blocking Dialog", "Shows a text input control to the user", console)
+                        "Blocking Dialog", "Shows a text input control to the user", console),
+
+                createButtonForCustomDialog(console)
         );
         box.setAlignment(Pos.CENTER);
 
@@ -49,6 +51,36 @@ public class DialogsDemo implements Sample {
         return btn;
     }
 
+    private Button createButtonForCustomDialog(Consumer<String> console) {
+        Dialog<Credential> dialog = new Dialog<>();
+
+        TextField fieldUserName = new TextField();
+        PasswordField fieldPassword = new PasswordField();
+
+        dialog.getDialogPane().setContent(new VBox(5,
+                new Label("Username:"),
+                fieldUserName,
+                new Label("Password:"),
+                fieldPassword)
+        );
+
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == ButtonType.OK) {
+                return new Credential(fieldUserName.getText(), fieldPassword.getText());
+            }
+
+            return null;
+        });
+
+        Button btn = createButton(dialog, "Custom Dialog", "Asks the user for credentials");
+        btn.setOnAction(e -> {
+            dialog.showAndWait().ifPresent(result -> console.accept("Username is " + result.username + ". Password is " + result.password));
+        });
+        return btn;
+    }
+
     private Button createButton(Dialog<?> dialog, String dialogName, String dialogText) {
         dialog.setContentText(dialogText);
 
@@ -56,5 +88,15 @@ public class DialogsDemo implements Sample {
         btn.setPrefWidth(150);
         btn.setOnAction(e -> dialog.show());
         return btn;
+    }
+
+    private static class Credential {
+        private String username;
+        private String password;
+
+        public Credential(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
     }
 }
