@@ -20,6 +20,7 @@ public class ProgressIndicatorDemo implements Sample {
 
     @Override
     public void buildDemo(Pane container, Consumer<String> console) {
+        progressIndicator.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         container.getChildren().addAll(progressIndicator);
     }
 
