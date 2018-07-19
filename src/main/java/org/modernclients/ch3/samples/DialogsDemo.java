@@ -11,12 +11,13 @@ import java.util.function.Consumer;
 
 /**
  * @author Almas Baimagambetov <almaslvl@gmail.com>
+ * @author Jonathan Giles <jonathan@jonathangiles.net>
  */
 public class DialogsDemo implements Sample {
 
     @Override
     public void buildDemo(Pane container, Consumer<String> console) {
-        VBox box = new VBox(5,
+        VBox box = new VBox(10,
                 createButton(new Alert(AlertType.INFORMATION),
                         "Information Alert", "Provides the user with information"),
 
@@ -46,7 +47,8 @@ public class DialogsDemo implements Sample {
     private Button createButtonForBlockingDialog(Dialog<?> dialog, String dialogName, String dialogText, Consumer<String> console) {
         Button btn = createButton(dialog, dialogName, dialogText);
         btn.setOnAction(e -> {
-            dialog.showAndWait().ifPresent(result -> console.accept("Result is " + result));
+            dialog.showAndWait()
+                  .ifPresent(result -> console.accept("Result is " + result));
         });
         return btn;
     }
@@ -57,16 +59,21 @@ public class DialogsDemo implements Sample {
         TextField fieldUserName = new TextField();
         PasswordField fieldPassword = new PasswordField();
 
-        dialog.getDialogPane().setContent(new VBox(5,
+        Pane content = new VBox(5,
                 new Label("Username:"),
                 fieldUserName,
                 new Label("Password:"),
-                fieldPassword)
-        );
+                fieldPassword);
 
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setHeaderText("Enter username and password...");
+        dialogPane.setContent(content);
+
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         dialog.setResultConverter(buttonType -> {
+            // if the user pressed the OK button, return the credentials, otherwise
+            // we return null
             if (buttonType == ButtonType.OK) {
                 return new Credential(fieldUserName.getText(), fieldPassword.getText());
             }
@@ -76,7 +83,8 @@ public class DialogsDemo implements Sample {
 
         Button btn = createButton(dialog, "Custom Dialog", "Asks the user for credentials");
         btn.setOnAction(e -> {
-            dialog.showAndWait().ifPresent(result -> console.accept("Username is " + result.username + ". Password is " + result.password));
+            dialog.showAndWait()
+                  .ifPresent(result -> console.accept("Username is " + result.username + ". Password is " + result.password));
         });
         return btn;
     }
@@ -85,7 +93,6 @@ public class DialogsDemo implements Sample {
         dialog.setContentText(dialogText);
 
         Button btn = new Button("Show " + dialogName);
-        btn.setPrefWidth(150);
         btn.setOnAction(e -> dialog.show());
         return btn;
     }
