@@ -55,7 +55,7 @@ public class TreeViewDemo implements Sample {
     }
     
     /**
-     * Render a control depeding on the content of the cell
+     * Render a control depending on the content of the cell
      * Based on https://stackoverflow.com/questions/33360921/javafxhow-to-use-checkbox-and-button-in-treeview#33367482
      */
     class CellControlRenderer extends TreeCell<String> {
