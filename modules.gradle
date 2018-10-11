@@ -1,0 +1,106 @@
+
+eclipse {
+    project {
+        natures 'org.eclipse.buildship.core.gradleprojectnature'
+    }
+
+    classpath {
+        file {
+            whenMerged {
+                entries.findAll { isModule(it) }.each { //(1)
+                    it.entryAttributes['module'] = 'true'
+                }
+
+                entries.findAll { isSource(it) && isTestScope(it) }.each {
+                    it.entryAttributes['test'] = 'true'
+                }
+
+                entries.findAll { isLibrary(it) && isTestScope(it) }.each {
+                    it.entryAttributes['test'] = 'true'
+                }
+            }
+        }
+
+        defaultOutputDir = file('build')
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+
+boolean isLibrary(entry) { return entry.properties.kind.equals('lib') }
+boolean isTestScope(entry) { return entry.entryAttributes.get('gradle_used_by_scope').equals('test'); }
+boolean isModule(entry) { isLibrary(entry) && !isTestScope(entry); }
+boolean isSource(entry) { return entry.properties.kind.equals('src'); }
+
+compileJava {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        options.compilerArgs = [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.controls',
+            '--add-modules', 'javafx.fxml',
+            '--add-modules', 'javafx.web',
+            '--add-modules', 'javafx.graphics',
+            '--add-modules', 'javafx.media'
+        ]
+        classpath = files()
+    }
+}
+
+compileTestJava {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        options.compilerArgs = [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.controls',
+            '--add-modules', 'javafx.fxml',
+            '--add-modules', 'javafx.web',
+            '--add-modules', 'javafx.graphics',
+            '--add-modules', 'javafx.media',
+            '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath
+        ]
+        classpath = files()
+    }
+}
+
+run {
+    doFirst {
+        jvmArgs = [
+                '--module-path', classpath.asPath,
+                '--add-modules', 'javafx.controls',
+                '--add-modules', 'javafx.fxml',
+                '--add-modules', 'javafx.web',
+                '--add-modules', 'javafx.graphics',
+                '--add-modules', 'javafx.media'
+        ]
+    }
+}
+
+javadoc {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        exclude "**/module-info.java"
+        options.addStringOption('-module-path', classpath.asPath)
+        options.addStringOption('-add-modules', 'javafx.controls')
+        options.addStringOption('-add-modules', 'javafx.fxml')
+        options.addStringOption('-add-modules', 'javafx.web')
+        options.addStringOption('-add-modules', 'javafx.graphics')
+        options.addStringOption('-add-modules', 'javafx.media')
+        options.addStringOption('-class-path', "")
+        options.addBooleanOption('html5', true)
+        options.addBooleanOption('verbose', true)
+    }
+}
+
+test {
+    doFirst {
+        jvmArgs = [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.controls',
+            '--add-modules', 'javafx.fxml',
+            '--add-modules', 'javafx.web',
+            '--add-modules', 'javafx.graphics',
+            '--add-modules', 'javafx.media'
+        ]
+    }
+}
