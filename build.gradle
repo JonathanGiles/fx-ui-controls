@@ -1,12 +1,42 @@
-apply plugin: 'java'
-apply plugin: 'application'
 
-repositories {
-    jcenter()
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'application'
 }
 
-dependencies {
-
-}
+sourceCompatibility = 11
+targetCompatibility = 11
 
 mainClassName = 'org.modernclients.ch3.DemoApp'
+
+ext {
+    moduleName = 'org.modernclients.ch3'
+}
+
+repositories {
+    mavenCentral()
+}
+
+def currentOS = org.gradle.internal.os.OperatingSystem.current()
+def platform
+if (currentOS.isWindows()) {
+    platform = 'win'
+} else if (currentOS.isLinux()) {
+    platform = 'linux'
+} else if (currentOS.isMacOsX()) {
+    platform = 'mac'
+}
+
+final def openjfxGroup = "org.openjfx"
+final def openjfxVersion = "11"
+dependencies {
+    compile group: openjfxGroup, name: "javafx-base", version: openjfxVersion, classifier: platform
+    compile group: openjfxGroup, name: "javafx-graphics", version: openjfxVersion, classifier: platform
+    compile group: openjfxGroup, name: "javafx-controls", version: openjfxVersion, classifier: platform
+    compile group: openjfxGroup, name: "javafx-media", version: openjfxVersion, classifier: platform
+    compile group: openjfxGroup, name: "javafx-web", version: openjfxVersion, classifier: platform
+    compile group: openjfxGroup, name: "javafx-fxml", version: openjfxVersion, classifier: platform
+}
+
+apply from: 'modules.gradle'
